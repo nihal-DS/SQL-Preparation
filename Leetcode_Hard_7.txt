@@ -1,0 +1,26 @@
+Problem: https://youtu.be/EjzhMv0E_FE?si=pi0vTN6z7uuDp2Ok
+
+with cte1 as (
+select *
+from (
+select
+	t.client_id
+	, u1.banned as client_ban
+	, t.driver_id
+	, u2.banned as driver_ban
+	, t.status
+	, t.request_at
+from trips t inner join users u1
+on t.client_id = u1.users_id inner join users u2
+on t.driver_id = u2.users_id) as a
+where 
+	client_ban = 'No' and
+	driver_ban = 'No' and
+	request_at between '2013-10-01' and '2013-10-03')
+	
+select
+	request_at
+	, count(case when status in ('cancelled_by_client', 'cancelled_by_driver') then 1 else null end) * 1.0 /
+	  count(request_at) as percentage
+from cte1
+group by request_at;
