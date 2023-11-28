@@ -1,0 +1,18 @@
+https://youtu.be/P6kNMyqKD0A?si=DZLkOpdJ5Vu0jko8
+
+
+select 
+	name
+	, sum(count) as total_visits
+	, first_value as most_visted_floor
+	, array_to_string(array_agg(resources),',') as resource_used
+from
+	(select 
+	 	name
+	 	, floor
+	 	, resources
+	 	, count(*)
+	 	, first_value(floor) over(partition by name order by count(*) desc)
+	from entries
+	group by name, floor, resources) a
+group by name, first_value
