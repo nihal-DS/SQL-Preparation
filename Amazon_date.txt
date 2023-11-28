@@ -1,0 +1,4 @@
+select 3 * 7 + date('2022-01-01') + cast(7 - extract(dow from date('2022-01-01')) as integer)
+       ^              ^
+       |              |
+Represents 'n'    Represents user date
