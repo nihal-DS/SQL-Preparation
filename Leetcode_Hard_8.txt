@@ -1,0 +1,26 @@
+Problem: https://youtu.be/IQ4n4n-Y9z8?si=5zF_RG3j9FoFXJOx
+
+with cte1 as (
+select 
+	first_player as p_id
+	, sum(first_score) as scores
+from (
+	select first_player, first_score from matches
+	union all
+	select second_player, second_score from matches
+	) as a
+group by first_player)
+
+select 
+	player_id
+	, group_id
+from (
+select 
+	player_id
+	, group_id
+	, scores
+	, rank() over(partition by group_id order by scores desc, player_id asc) as rnk
+from players p inner join cte1 as c
+on p.player_id = c.p_id) as b
+where rnk = 1;
+
