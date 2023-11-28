@@ -1,0 +1,23 @@
+with cte1 as (
+select 
+		customer_id
+		, order_date
+		, row_number() over(partition by customer_id order by order_date) as row
+from customer_orders),
+	
+cte2 as (
+select 
+	order_date
+	, count(order_date) as first_time
+from cte1
+group by order_date, row
+having row = 1),
+
+cte3 as (
+select order_date, count(order_date) as cnt from cte1 group by order_date)
+
+select 
+  c3.order_date
+, c2.first_time
+, c3.cnt - c2.first_time as repeat
+from cte2 c2 inner join cte3 c3 on c2.order_date = c3.order_date;
