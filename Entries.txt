@@ -5,7 +5,7 @@ select
 	name
 	, sum(count) as total_visits
 	, first_value as most_visted_floor
-	, array_to_string(array_agg(resources),',') as resource_used
+	, string_agg(resources,',') as resource_used
 from
 	(select 
 	 	name
