@@ -1,0 +1,12 @@
+Problem: https://youtu.be/WrToXXN7Jb4?si=UzSQRTI4oHI4BRIQ
+
+select 
+	min(date_value) as start_date
+	, max(date_value) as end_date
+	, state
+from (
+select *,
+date_value - cast(row_number() over(partition by state order by date_value) as integer) as r
+from tasks
+order by date_value) as a
+group by r, state;
