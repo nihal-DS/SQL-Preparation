@@ -1,0 +1,18 @@
+Problem: https://youtu.be/RljzVfz8vjk?si=CzylOaKKcXifzow2
+
+select 
+	username
+	, activity
+	, startdate
+	, enddate
+from 
+(select 
+	username
+	, activity
+	, startdate
+ 	, enddate
+	, count(username) over(partition by username) as entry_count
+	, rank() over(partition by username order by startdate desc) as rnk
+from UserActivity
+order by startdate) as a
+where entry_count = 1 or rnk = 2;
