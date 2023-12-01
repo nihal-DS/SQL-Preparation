@@ -1,0 +1,28 @@
+Question 1:
+select 
+	event_date
+	, count(distinct(user_id)) as activity_cnt
+from activity
+group by event_date;
+
+Question 2:
+select 
+	date_part('week', event_date) as week_number
+	, count(distinct(user_id))
+from activity
+group by date_part('week', event_date);
+
+Question 3:
+select
+	event_date
+	, sum(case when cnt = 1 then 0 else 1 end) as cnt1
+from 
+(select 
+	event_date
+	, user_id
+	, count(distinct(event_name)) as cnt
+from activity
+group by event_date, user_id) as a
+group by event_date;
+
+Question 4:
