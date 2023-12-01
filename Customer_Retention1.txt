@@ -1,0 +1,14 @@
+Problem: https://youtu.be/6hfsRqmyvog?si=qANWUMSrQZVg-v5Y
+
+
+select
+	to_char(to_date(month::text, 'MM'), 'Month') as month
+	, sum(month_diff) as repeat_customer
+from
+	(select 
+		*
+		, extract(month from order_date) as month
+		, date_part('month', order_date) - date_part('month', lag(order_date, 1) over(partition by cust_id order by order_date)) as month_diff
+	from transactions) as a
+group by month, month_diff
+having month_diff = 1;

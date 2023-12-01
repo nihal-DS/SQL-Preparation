@@ -1,0 +1,19 @@
+Problem: https://youtu.be/i_ljK9gmstY?si=hv8cwvxBFvXrLATg
+
+select
+round((select 
+	count(distinct(u.user_id))
+from users2 u inner join events e on u.user_id = e.user_id
+where 
+	type != 'Pay' and
+	access_date - join_date < 30
+group by u.user_id
+having count(distinct(type)) = 2) * 1.0
+
+/
+
+(select 
+	count(distinct(u.user_id))
+from users2 u inner join events e on u.user_id = e.user_id
+where 
+	type = 'Music'), 2);
