@@ -26,3 +26,31 @@ group by event_date, user_id) as a
 group by event_date;
 
 Question 4:
+with cte1 as 
+(select 
+	case when country in ('India', 'USA') then country else 'Other' end as country_new
+	, count(user_id)
+from activity
+where event_name = 'app-purchase'
+group by (case when country in ('India', 'USA') then country else 'Other' end)),
+
+total as 
+(select
+	sum(count)
+from cte1)
+
+select 
+	country_new
+	, round(count * 1.0/sum, 2) * 100 as percentage
+from cte1, total;
+
+Question 5:
+select
+	event_date
+	, sum(l)
+from
+(select *
+	, case when event_date - lag(event_date) over(partition by user_id order by event_date) = 1 then 1 else 0 end as l
+from activity) as a
+group by event_date
+order by event_date;
