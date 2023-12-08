@@ -1,0 +1,24 @@
+1. Employees With Same Birth Month ID 10355
+
+with cte1 as (
+select 
+    *
+from 
+(select distinct profession from employee_list) profession 
+cross join
+(select distinct (to_char(birthday::date, 'Month')), birth_month from employee_list) month_name),
+
+cte2 as (
+select 
+    profession
+    , birth_month
+    , count(*) as cnt
+from employee_list
+group by profession, birth_month)
+
+select c1.profession, to_char, 
+case when cnt is null then 0 else cnt end as count
+from 
+cte1 c1 left join cte2 c2 on c1.profession = c2.profession
+and c1.birth_month = c2.birth_month;
+
