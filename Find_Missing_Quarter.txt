@@ -1,0 +1,13 @@
+Problem: https://youtu.be/cGP5Tm2gVdQ?si=e69p7q5B6S0JUnX-
+
+
+with cte1 as (
+select 
+	distinct s1.store
+	, s2.quarter
+from stores s1, stores s2)
+
+select 
+c.store, c.quarter
+from cte1 c left join stores s on s.store = c.store and s.quarter = c.quarter
+where s.store is null;
