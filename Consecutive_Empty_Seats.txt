@@ -1,0 +1,18 @@
+Problem: https://youtu.be/F9Otofceer0?si=eJSxdxB3UjEmnWDT
+
+with cte1 as (
+select *
+	, seat_no - row_number() over(order by seat_no) as r1
+from bms
+where is_empty = 'Y'),
+
+cte2 as (
+select *
+	, count(r1) over(partition by r1) as cnt
+from cte1)
+
+select 
+	seat_no
+	, is_empty
+from cte2
+where cnt > 2;
