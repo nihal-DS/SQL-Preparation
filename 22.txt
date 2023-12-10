@@ -1,0 +1,7 @@
+Problem: https://youtu.be/aHShJ0hQtFc?si=imdn8HdBl0vI2jcm
+
+select 
+student_id
+from exams
+group by student_id
+having count(distinct(marks)) = 1 and count(subject) > 1;
