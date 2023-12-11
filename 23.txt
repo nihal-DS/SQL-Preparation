@@ -1,0 +1,10 @@
+Problem: https://youtu.be/7okRHS6WL0c?si=uxICQRKoBa_xvy62
+
+select
+	city
+from (
+select *
+	, rank() over(partition by city order by days) - rank() over(partition by city order by cases) r1
+from covid) a
+group by city
+having max(r1) = min(r1);
