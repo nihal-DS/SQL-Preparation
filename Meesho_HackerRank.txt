@@ -1,0 +1,17 @@
+Problem: https://youtu.be/B09xhslOvxw?si=XQlhkVCxrGaaRfxa
+
+with cte1 as (
+select * from (
+select *
+, sum(cost) over(partition by customer_id order by cost)
+from products1 p
+inner join customer_budget c on p.cost < c.budget) as a
+where sum < budget)
+
+select 
+	customer_id
+	, budget
+	, count(product_id) as cnt
+	, string_agg(product_id, ',')
+from cte1
+group by customer_id, budget;
