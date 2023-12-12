@@ -1,0 +1,8 @@
+Problem: https://youtu.be/FZm7NgybHWA?si=n0eS2ayV7gUpxkl7
+
+select c1, c2, sum(sms_no) as s from (
+select *
+	, case when sender < receiver then sender else receiver end c1
+	, case when sender > receiver then sender else receiver end c2
+from subscriber) as a
+group by c1, c2;
