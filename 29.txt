@@ -1,0 +1,10 @@
+Problem: https://youtu.be/XQ80MgsTka0?si=WD5UqKkJaygYRB0O
+
+with cte1 as (
+select *, sum(c) over(order by event_time desc) from (
+select *
+, case when status = 'on' then 0 else 1 end as c
+from event_status) as a)
+
+select min(event_time) as start_time, max(event_time) as end_time, count(*) - 1 as cnt from cte1
+group by sum;

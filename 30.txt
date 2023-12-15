@@ -1,0 +1,12 @@
+Problem: https://youtu.be/e-I9SxbLky8?si=jd9kG4lWpySUyN9U
+
+select
+		max(case when city = 'Bangalore' then name end) as Bangalore,
+		max(case when city = 'Delhi' then name end) as Delhi,
+		max(case when city = 'Mumbai' then name end) as Mumbai
+from (
+select *
+	, rank() over(partition by city order by name)
+from players_location) as a
+group by rank
+order by rank;
