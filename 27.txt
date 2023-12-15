@@ -1,1 +1,35 @@
-##
+Problem: https://youtu.be/Ck1gQrlS5pQ?si=MuquCzQbHHIxxIRm
+
+-- 1.
+select studentid, studentname, subject from (
+select 
+* , avg(marks) over(partition by subject)
+from students) as a
+where marks > avg;
+
+-- 2.
+select 
+(select count(distinct(studentid)) from students where marks > 90) * 1.0 
+/ 
+(select count(distinct(studentid)) from students);
+
+-- 3.
+with cte1 as (
+select *
+, rank() over(partition by subject order by marks) as asc_marks
+, rank() over (partition by subject order by marks desc) as desc_marks
+from students)
+
+select subject
+, sum(case when asc_marks = 2 then marks else null end) as second_lowest_marks
+, sum(case when desc_marks = 2 then marks else null end) as second_highest_marks
+from cte1
+group by subject;
+
+
+-- 4.
+select *, 
+case when lag(marks) over(partition by studentid order by testdate) is null then '-'
+	when lag(marks) over(partition by studentid order by testdate) < marks then 'increased' else 'decreased' end
+from students
+order by studentid, testdate, testid;
