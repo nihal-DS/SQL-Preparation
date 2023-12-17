@@ -1,0 +1,11 @@
+Problem: https://youtu.be/y-CeVtidYJE?si=Me3Nk9YeCySF2FRv
+
+
+-- Identify year wise count of new cities where udaan started their operation
+with cte1 as (
+select *
+, extract(year from business_date) as u
+, row_number() over(partition by city_id order by business_date) as rn
+from business_city)
+
+select u, count(*) from cte1 where rn = 1 group by u;
