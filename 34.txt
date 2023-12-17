@@ -1,0 +1,11 @@
+Problem: https://youtu.be/tDfAo7uw-3w?si=yqDNwFB79q-r6Mq3
+
+
+with cte1 as (
+select *
+, id - row_number() over(order by id) as rn
+from stadium
+where no_of_people > 100)
+
+select * from cte1
+where rn in (select rn from cte1 group by rn having count(rn) >= 3);
