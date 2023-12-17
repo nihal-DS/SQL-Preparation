@@ -1,0 +1,13 @@
+Problem: https://youtu.be/fwPk1RXlorQ?si=ZS9QDcvs5Co0V6bu
+
+select 
+	company
+	, avg(salary) 
+from (
+select *
+, row_number() over(partition by company order by salary)
+, count(*) over(partition by company) * 1.0 / 2 as cnt1
+, count(*) over(partition by company) * 1.0 / 2 + 1 as cnt2
+from employee1) as a
+where row_number between cnt1 and cnt2
+group by company;
