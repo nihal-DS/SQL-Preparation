@@ -1,0 +1,16 @@
+Problem: https://youtu.be/Cbm6Hz_Yhwg?si=meA72NqlaFDfYM6s
+
+
+select 
+	dep_id
+	, salary
+	, rnk
+	, cnt
+from (
+select 
+	dep_id
+	, salary
+	, rank() over(partition by dep_id order by salary desc) as rnk
+	, count(*) over(partition by dep_id) as cnt
+from emp) as a
+where (cnt > 2 and rnk = 3) or (cnt <=2 and rnk = cnt);
