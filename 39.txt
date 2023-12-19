@@ -1,0 +1,11 @@
+Problem: https://youtu.be/Xh0EevUOWF0?si=yCYkUlOzXCvEIAs_
+
+
+with cte1 as (
+select *,
+sum(case when category is not null then 1 else 0 end) over(rows between unbounded preceding and current row)
+from brands)
+
+select *,
+max(category) over(partition by sum order by sum) as category2
+from cte1;
