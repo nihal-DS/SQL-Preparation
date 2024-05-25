@@ -1,0 +1,10 @@
+3: https://youtu.be/oGYinDMDfnA?si=Y3bzpqKo71b7qTcf
+
+select
+	count(distinct(emp_id))
+from (
+select
+	*
+	, last_value(action) over(partition by emp_id)
+from hospital) a
+where last_value = 'in';
