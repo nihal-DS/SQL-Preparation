@@ -50,7 +50,7 @@ where e1.salary = e2.salary and e1.emp_id != e2.emp_id;
 8. Min and Max number of values in case of inner, left, right and outer join.
 9. Repeat Purchase on Multiple days (DataLemur)
 
-10. https://youtu.be/TGxgo3tu400?si=JvWlojml8S_pwdzU
+10. https://youtu.be/DwYAz9hYjrw?si=IvEMojPSSngI-KN8
 
 with cte1 as (
 select
@@ -69,3 +69,5 @@ select
   ,dense_rank() over(order by cnt desc)
 from cte1) a
 where dense_rank<6;
+
+11. 
