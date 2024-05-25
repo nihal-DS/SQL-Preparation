@@ -1,0 +1,18 @@
+https://youtu.be/FZ0GCcnIIWA?si=Z6FeygY3KtpC_SXV
+
+with cte1 as (
+select 
+	ticket_id
+	, create_date
+	, resolved_date
+	, count(holiday_date) as holidays
+from tickets t
+left join holidays h
+on h.holiday_date between t.create_date and t.resolved_date
+group by ticket_id, create_date, resolved_date)
+
+select
+	ticket_id
+	, ((resolved_date-create_date) - 2*(floor((resolved_date-create_date)*1.0/7))) - holidays as duration
+from cte1
+order by ticket_id; 
