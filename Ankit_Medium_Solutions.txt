@@ -33,4 +33,16 @@ select
 from cte2) a
 where rank = 1;
 
-5.
+5.https://youtu.be/TvqKpz9RO-A?si=vhEH2EGzPU4Fhxld
+
+select 
+	e1.emp_id
+	, e1.name
+	, e1.salary
+	, e1.dept_id
+from emp_salary e1
+inner join emp_salary e2
+on e1.dept_id=e2.dept_id
+where e1.salary = e2.salary and e1.emp_id != e2.emp_id;
+
+6. 
