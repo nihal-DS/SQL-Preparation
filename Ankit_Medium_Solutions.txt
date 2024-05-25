@@ -45,4 +45,27 @@ inner join emp_salary e2
 on e1.dept_id=e2.dept_id
 where e1.salary = e2.salary and e1.emp_id != e2.emp_id;
 
-6. 
+6. LinkedIn Power User (DataLemur)
+7. Adobe Photoshop (DataLemur)
+8. Min and Max number of values in case of inner, left, right and outer join.
+9. Repeat Purchase on Multiple days (DataLemur)
+
+10. https://youtu.be/TGxgo3tu400?si=JvWlojml8S_pwdzU
+
+with cte1 as (
+select
+  a.artist_name
+  ,count(s.name) as cnt
+from artists a
+inner JOIN songs s
+on a.artist_id=s.artist_id
+inner join (select * from global_song_rank where rank<11) gs
+on s.song_id=gs.song_id
+group by a.artist_name)
+
+select * from (
+select 
+  artist_name
+  ,dense_rank() over(order by cnt desc)
+from cte1) a
+where dense_rank<6;
