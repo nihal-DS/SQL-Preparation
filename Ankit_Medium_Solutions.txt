@@ -8,3 +8,29 @@ select
 	, last_value(action) over(partition by emp_id)
 from hospital) a
 where last_value = 'in';
+
+4. https://youtu.be/PE5MZW1CxOI?si=UeDDMmQQWEqg2WO5
+
+with cte1 as (
+select 
+	*
+	, unnest(string_to_array(filter_room_types, ',')) as room_type
+from airbnb_searches),
+cte2 as (
+select
+	room_type
+	, count(room_type)
+from cte1
+group by room_type)
+
+select
+	room_type
+	, count
+from (
+select 
+	*
+	, rank() over(order by count desc)
+from cte2) a
+where rank = 1;
+
+5.
