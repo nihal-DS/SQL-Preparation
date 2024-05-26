@@ -1,4 +1,4 @@
-3: https://youtu.be/oGYinDMDfnA?si=Y3bzpqKo71b7qTcf
+	3: https://youtu.be/oGYinDMDfnA?si=Y3bzpqKo71b7qTcf
 
 select
 	count(distinct(emp_id))
@@ -70,4 +70,24 @@ select
 from cte1) a
 where dense_rank<6;
 
-11. 
+11. https://youtu.be/7W7B0y5WsaQ?si=orbY5olxJzlBaOa4
+
+with cte1 as (
+select 
+	*
+	, rank() over(partition by dep_id order by salary desc) as rank1
+	, rank() over(partition by dep_id order by salary) as rank2
+from employee2),
+cte2 as (
+select
+	dep_id
+	, case when rank1=1 then emp_name end as max_salary
+	, case when rank2=1 then emp_name end as min_salary
+from cte1)
+
+select
+	dep_id
+	, min(max_salary)
+	, min(min_salary)
+from cte2
+group by dep_id;
